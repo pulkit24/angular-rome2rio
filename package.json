@@ -1,0 +1,31 @@
+{
+  "name": "angular-rome2rio",
+  "version": "0.0.1",
+  "description": "Rome2Rio Search API implementation in AngularJS",
+  "main": "src/angular-rome2rio.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test/test.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://pulkit24@github.com/pulkit24/angular-rome2rio.git"
+  },
+  "keywords": [
+    "rome2rio",
+    "angular"
+  ],
+  "author": "Pulkit Karwal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pulkit24/angular-rome2rio/issues"
+  },
+  "devDependencies": {
+    "grunt-ngmin": "0.0.3",
+    "grunt-contrib-uglify": "~0.3.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-clean": "~0.5.0"
+  }
+}

@@ -16,5 +16,6 @@
 	, "smarttabs": true
 	, "globals": {
 		"angular": false
+		, "module": false
 	}
 }
