@@ -98,7 +98,7 @@ angular.module('angular-rome2rio', [])
 				var mappablePathSegments = [];
 
 				angular.forEach(segments, function(segment, index) {
-					cost += segment.indicativePrice;
+					cost += segment.indicativePrice.price;
 					mappablePathSegments.push(segment.path);
 				});
 
