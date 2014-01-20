@@ -1,5 +1,7 @@
 angular.module('angular-rome2rio', [])
 	.provider('rome2rio', function() {
+		'use strict';
+
 		var _settings = {};
 		_settings.apiKey = null;
 		_settings.apiServer = 'free.rome2rio.com';
@@ -47,47 +49,47 @@ angular.module('angular-rome2rio', [])
 
 			function _createRequest(oName, dName, oPos, dPos, oKind, dKind, currency, flags) {
 				var url = {};
-				url.prefix = "http://";
+				url.prefix = 'http://';
 				url.server = _settings.apiServer;
 				url.version = _settings.apiVersion;
 				url.format = _settings.responseFormat;
-				url.endPoint = "Search";
+				url.endPoint = 'Search';
 				url.key = _settings.apiKey;
 
 				var params = [];
-				params.push("oName=" + oName);
-				params.push("dName=" + dName);
-				params.push("oPos=" + oPos);
-				params.push("dPos=" + dPos);
-				params.push("oKind=" + oKind);
-				params.push("dKind=" + dKind);
-				params.push("currency=" + currency);
-				params.push("flags=" + flags);
+				if (oName) params.push('oName=' + oName);
+				if (dName) params.push('dName=' + dName);
+				if (oPos) params.push('oPos=' + oPos);
+				if (dPos) params.push('dPos=' + dPos);
+				if (oKind) params.push('oKind=' + oKind);
+				if (dKind) params.push('dKind=' + dKind);
+				if (currency) params.push('currency=' + currency);
+				if (flags) params.push('flags=' + flags);
 
-				return url.prefix + url.server + "/api/" + url.version + "/" + url.format + "/" + url.endPoint +
-					"?key=" + url.key + "&" + params.join("&");
+				return url.prefix + url.server + '/api/' + url.version + '/' + url.format + '/' + url.endPoint +
+					'?key=' + url.key + '&' + params.join('&');
 			}
 
 			function search(originName, destinationName, originPosition, destinationPosition) {
 				var deferred = $q.defer();
 				$http.get(_createRequest(originName, destinationName, originPosition, destinationPosition,
 					_settings.kind, _settings.kind, _settings.currency, _settings.flags))
-					.then(function(fullResponse) {
-						if (_settings.responseFormat === 'json') {
-							var routes = fullResponse.routes;
-							if (routes) {
-								deferred.resolve(_parseRoutes(routes));
-							} else {
-								deferred.reject('No routes available');
-							}
-						} else {
-							deferred.resolve(fullResponse);
-						}
-					});
+
+				.success(function(fullResponse) {
+					if (_settings.responseFormat === 'json') {
+						var routes = fullResponse.routes;
+
+						if (routes) deferred.resolve(_parseRoutes(routes));
+						else deferred.reject('No routes available');
+
+					} else deferred.resolve(fullResponse);
+				});
+
+				return deferred.promise;
 			}
 
 			function toPosition(latitude, longitude) {
-				return latitude + "," + longitude;
+				return latitude + ',' + longitude;
 			}
 
 			function _parseRoutes(routes) {
@@ -104,7 +106,7 @@ angular.module('angular-rome2rio', [])
 					getCost: function() {
 						return cost;
 					}
-					, getRoutePath: function() {
+					, getPaths: function() {
 						return mappablePathSegments;
 					}
 				};
@@ -112,6 +114,7 @@ angular.module('angular-rome2rio', [])
 
 			return {
 				search: search
+				, rawRequestURL: _createRequest
 				, toPosition: toPosition
 			};
 		};

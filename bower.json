@@ -1,0 +1,27 @@
+{
+  "name": "angular-rome2rio",
+  "main": "angular-rome2rio.js",
+  "version": "0.1",
+  "homepage": "https://github.com/pulkit24/angular-rome2rio",
+  "authors": [
+    "Pulkit Karwal <pulkitkarwal@gmail.com>"
+  ],
+  "description": "Rome2Rio Search API implementation in AngularJS",
+  "keywords": [
+    "rome2rio",
+    "angular"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "~1.2.9",
+    "angular-mocks": "~1.2.9"
+  }
+}

@@ -1,0 +1,20 @@
+{
+	"browser": true
+	, "esnext": true
+	, "bitwise": true
+	, "eqeqeq": true
+	, "immed": true
+	, "latedef": true
+	, "newcap": true
+	, "laxcomma": true
+	, "noarg": true
+	, "quotmark": "single"
+	, "regexp": true
+	, "undef": true
+	, "strict": true
+	, "trailing": true
+	, "smarttabs": true
+	, "globals": {
+		"angular": false
+	}
+}
