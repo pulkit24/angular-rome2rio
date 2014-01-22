@@ -52,7 +52,10 @@ describe('Testing angular-rome2rio provider', function() {
 
 			$httpBackend.expectGET(requestURL).respond({
 				routes: [{
-					segments: [{
+					indicativePrice: {
+						price: 30
+					}
+					, segments: [{
 						indicativePrice: {
 							price: 10
 						}

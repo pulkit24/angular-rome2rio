@@ -98,17 +98,22 @@ angular.module('angular-rome2rio', [])
 				var mappablePathSegments = [];
 
 				angular.forEach(segments, function(segment, index) {
-					cost += segment.indicativePrice.price;
+					if (angular.isNumber(segment.indicativePrice.price))
+						cost += segment.indicativePrice.price;
 					mappablePathSegments.push(segment.path);
 				});
 
+				function getCost() {
+					return cost;
+				}
+
+				function getPaths() {
+					return mappablePathSegments;
+				}
+
 				return {
-					getCost: function() {
-						return cost;
-					}
-					, getPaths: function() {
-						return mappablePathSegments;
-					}
+					getCost: getCost
+					, getPaths: getPaths
 				};
 			}
 
