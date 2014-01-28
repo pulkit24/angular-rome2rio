@@ -93,15 +93,21 @@ angular.module('angular-rome2rio', [])
 			}
 
 			function _parseRoutes(routes) {
+				var routeCost = routes[0].indicativePrice.price;
+
 				var segments = routes[0].segments;
-				var cost = 0;
 				var mappablePathSegments = [];
+				var segmentsCost = 0;
 
 				angular.forEach(segments, function(segment, index) {
 					if (angular.isNumber(segment.indicativePrice.price))
-						cost += segment.indicativePrice.price;
+						segmentsCost += segment.indicativePrice.price;
 					mappablePathSegments.push(segment.path);
 				});
+
+				var cost = routeCost;
+				if(segmentsCost > routeCost)
+					cost = segmentsCost;
 
 				function getCost() {
 					return cost;
@@ -112,7 +118,12 @@ angular.module('angular-rome2rio', [])
 				}
 
 				return {
-					getCost: getCost
+					// As data
+					cost: cost
+					, paths: mappablePathSegments
+
+					// As functions
+					, getCost: getCost
 					, getPaths: getPaths
 				};
 			}
