@@ -71,8 +71,8 @@ describe('Testing angular-rome2rio provider', function() {
 			var promise = rome2rioProvider.$get($q, $http).search('orig', 'dest', '1,2', '3,4');
 			$httpBackend.flush();
 			promise.then(function(routes) {
-				expect(routes.getCost()).toBe(30);
-				expect(routes.getPaths()).toBe(['path1', 'path2']);
+				expect(rome2rioProvider.getCost(routes)).toBe(30);
+				expect(rome2rioProvider.getPaths(routes)).toBe(['path1', 'path2']);
 			});
 		}));
 	});

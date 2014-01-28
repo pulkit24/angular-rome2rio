@@ -79,7 +79,7 @@ angular.module('angular-rome2rio', [])
 					if (_settings.responseFormat === 'json') {
 						var routes = fullResponse.routes;
 
-						if (routes) deferred.resolve(_parseRoutes(routes));
+						if (routes) deferred.resolve(routes);
 						else deferred.reject('No routes available');
 
 					} else deferred.resolve(fullResponse);
@@ -92,46 +92,56 @@ angular.module('angular-rome2rio', [])
 				return latitude + ',' + longitude;
 			}
 
-			function _parseRoutes(routes) {
-				var routeCost = routes[0].indicativePrice.price;
+			function getPaths(routes, index) {
+				// If we don't have an index specified,
+				// pick the first route with a valid segments list
+				if(!index) {
+					for(var i = 0, len = routes.length; i < len; i++) {
+						if(routes[i].segments && routes[i].segments.length) {
+							index = i;
+							break;
+						}
+					}
 
-				var segments = routes[0].segments;
+					index = 0;
+				}
+
+				// Get the segments
+				var segments = routes[index].segments;
 				var mappablePathSegments = [];
-				var segmentsCost = 0;
 
+				// Extracts paths ready-to-draw on Google maps
 				angular.forEach(segments, function(segment, index) {
 					if (angular.isNumber(segment.indicativePrice.price))
-						segmentsCost += segment.indicativePrice.price;
 					mappablePathSegments.push(segment.path);
 				});
 
-				var cost = routeCost;
-				if(segmentsCost > routeCost)
-					cost = segmentsCost;
+				return mappablePathSegments;
+			}
 
-				function getCost() {
-					return cost;
+			function getCost(routes, index) {
+				// If an index is provided, return the cost as-is
+				if(index) {
+					return routes[index].indicativePrice.price;
 				}
 
-				function getPaths() {
-					return mappablePathSegments;
+				// Otherwise, find the first route with a defined cost
+				else {
+					for(var i = 0, len = routes.length; i < len; i++) {
+						if(routes[i].indicativePrice.price)
+							return routes[i].indicativePrice.price;
+					}
 				}
 
-				return {
-					// As data
-					cost: cost
-					, paths: mappablePathSegments
-
-					// As functions
-					, getCost: getCost
-					, getPaths: getPaths
-				};
+				return null;
 			}
 
 			return {
-				search: search
-				, rawRequestURL: _createRequest
-				, toPosition: toPosition
+				search: search // returns a list of routes as-is
+				, rawRequestURL: _createRequest // for testing - check the URL created by this service
+				, toPosition: toPosition // create a lat, lng string per Rome2Rio's specifications
+				, getPaths: getPaths // specify route index, or the first/best will be picked
+				, getCost: getCost
 			};
 		};
 	});
